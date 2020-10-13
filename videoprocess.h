@@ -5,7 +5,7 @@
 #include <QDebug>
 #include <QImage>
 #include <QPixmap>
-#include <QTime>
+#include <QElapsedTimer>
 #include "opencv2/opencv.hpp"
 
 class VideoProcess : public QThread

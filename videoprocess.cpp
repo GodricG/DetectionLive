@@ -23,7 +23,7 @@ void VideoProcess::run()
     {
         if(video.isOpened())
         {
-            QTime time;
+            QElapsedTimer time;
             time.start();
             cv::Mat frame;
             //video.set(cv::CAP_PROP_POS_MSEC,53000);
