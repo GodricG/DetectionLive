@@ -20,6 +20,7 @@
 #include <QVBoxLayout>
 #include "opencv2/opencv.hpp"
 #include "videoprocess.h"
+#include "preprocess.h"
 
 namespace Ui {
 class Detection;
@@ -54,6 +55,7 @@ private:
     QLabel *labelROI;
     cv::Mat *image;
     VideoProcess *video = nullptr;
+    PreProcess *preProcess = nullptr;
     bool isPlaying = false;
     bool convertToGrayScale = false;
     bool setted = false;

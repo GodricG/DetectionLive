@@ -32,15 +32,15 @@ Detection::Detection(QWidget *parent) :
     //container for threee side windows
     QVBoxLayout *labelsVLayout = new QVBoxLayout;
     labelROI = new QLabel(this);
-    //labelROI->setMaximumWidth(200);
+    labelROI->setMaximumWidth(300);
     labelROI->setMinimumWidth(200);
     labelsVLayout->addWidget(labelROI);
     QLabel *labelHistogram = new QLabel(this);
-    //labelHistogram->setMaximumWidth(200);
+    labelHistogram->setMaximumWidth(300);
     labelHistogram->setMinimumWidth(200);
     labelsVLayout->addWidget(labelHistogram);
     QLabel *labelDetecion = new QLabel(this);
-    //labelDetecion->setMaximumWidth(200);
+    labelDetecion->setMaximumWidth(300);
     labelDetecion->setMinimumWidth(200);
     labelsVLayout->addWidget(labelDetecion);
     //container for above two containers
@@ -81,6 +81,7 @@ Detection::Detection(QWidget *parent) :
     connect(video,&VideoProcess::newFrame,this,&Detection::showFrame);
     connect(this,&Detection::cvtGray,video,&VideoProcess::cvtGray);
     connect(video,&VideoProcess::currentFrameInfo,this,&Detection::getCurrentFrameInfo);
+    preProcess = new PreProcess();
 }
 
 Detection::~Detection()
@@ -136,7 +137,17 @@ void Detection::readImage()
 //        int width = image->cols;
 //        int height = image->rows;
 //        img.scaled(width,height,Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-        labelOri->setPixmap(QPixmap::fromImage(QImage(image->data,image->cols,image->rows,image->step,QImage::Format_BGR888)));
+        labelOri->setPixmap(QPixmap::fromImage(QImage(image->data,image->cols,image->rows,
+                                                      image->step,QImage::Format_BGR888)));
+        cv::Mat tmp;
+        image->copyTo(tmp);
+        cv::cvtColor(tmp,tmp,CV_BGR2GRAY);
+        preProcess->SetImage((&tmp));
+        preProcess->SetROI(cv::Point(50,50),200,200);
+        preProcess->DetectEdge();
+        cv::Mat roiImage= preProcess->GetROI();
+        labelROI->setPixmap(QPixmap::fromImage(QImage(roiImage.data,roiImage.cols,
+                                                      roiImage.rows,roiImage.step,QImage::Format_Grayscale8)));
     }
 }
 void Detection::readVideo()

@@ -33,12 +33,14 @@ set(${PROJECT_NAME}_HEADERS
     mainwindow.h
     detection.h
     videoprocess.h
+    preprocess.h
 )
 set(${PROJECT_NAME}_SOURCES
     main.cpp
     mainwindow.cpp
     detection.cpp
     videoprocess.cpp
+    preprocess.cpp
     #icon.rc
 )
 set(${PROJECT_NAME}_FORMS
